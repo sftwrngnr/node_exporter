@@ -9,6 +9,7 @@ enabled_collectors=$(cat << COLLECTORS
   conntrack
   cpu
   cpufreq
+  csos
   diskstats
   drbd
   edac

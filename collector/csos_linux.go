@@ -11,8 +11,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// +build freebsd linux
-
 package collector
 
 import (
@@ -29,7 +27,8 @@ var csosDesc = prometheus.NewDesc(
 	nil,
 )
 
-type csosCollector struct{}
+type csosCollector struct {
+}
 type csosperfdata struct {
 	TestReference string
 	ExecParams    string
