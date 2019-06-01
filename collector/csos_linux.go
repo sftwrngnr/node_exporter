@@ -14,11 +14,13 @@
 package collector
 
 import (
+	//"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
 
 	"github.com/prometheus/client_golang/prometheus"
+	//"github.com/prometheus/common/log"
 )
 
 var csosDesc = prometheus.NewDesc(
@@ -51,12 +53,13 @@ func newCsosCollector() (Collector, error) {
 func getTestFileData(fn string) csosperfdata {
 	var retval csosperfdata
 	dat, err := ioutil.ReadFile(fn)
-	if err != nil {
+	if err == nil {
 		// Parse dat
 		tdata := strings.Split(string(dat), ",")
 		retval.TestReference = tdata[0]
-		retval.ExecParams = tdata[1]
+		retval.ExecParams = tdata[1][:len(tdata[1])-1]
 	}
+	//log.Infof(fmt.Sprintf("%v", retval))
 	return retval
 }
 
