@@ -14,6 +14,10 @@
 package collector
 
 import (
+	"io/ioutil"
+	"os"
+	"strings"
+
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -40,12 +44,33 @@ func init() {
 
 // NewCsosCollector returns new csosCollector.
 func newCsosCollector() (Collector, error) {
+
 	return &csosCollector{}, nil
 }
 
+func getTestFileData(fn string) csosperfdata {
+	var retval csosperfdata
+	dat, err := ioutil.ReadFile(fn)
+	if err != nil {
+		// Parse dat
+		tdata := strings.Split(string(dat), ",")
+		retval.TestReference = tdata[0]
+		retval.ExecParams = tdata[1]
+	}
+	return retval
+}
+
 func getCsosPerfTag() (csosperfdata, error) {
-	myData := csosperfdata{TestReference: "Sludge", ExecParams: "Blah"}
-	return myData, error(nil)
+	EmptyData := csosperfdata{TestReference: "None", ExecParams: "None"}
+	const fname = "/tmp/currentTest.txt"
+	_, err := os.Stat(fname)
+	if os.IsNotExist(err) {
+		return EmptyData, error(nil)
+	}
+	if err != nil {
+		return csosperfdata{}, err
+	}
+	return getTestFileData(fname), error(nil)
 }
 
 func (c *csosCollector) Update(ch chan<- prometheus.Metric) error {
