@@ -18,11 +18,11 @@ import (
 )
 
 var csosDesc = prometheus.NewDesc(
-	prometheus.BuildFQName(namespace, "csos", "test run"),
+	prometheus.BuildFQName(namespace, "csos", "entries"),
 	"Current test run.",
 	[]string{
-		"test reference",
-		"exec params",
+		"test_reference",
+		"exec_params",
 	},
 	nil,
 )
